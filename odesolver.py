@@ -12,13 +12,13 @@ def system(w, t, p):
     return f
 
 # Initial conditions and parameters
-IC0 = 0.3333
-IW0 = 0.3333
-S0 = 0.3333
+IC0 = 0.2
+IW0 = 0.6
+S0 = 0.2
 epsilon = 0.1
 piBStar = 0.8
 piBHat = 0.1
-eta = epsilon
+eta = 3*epsilon
 
 fic = (1-epsilon) * piBStar + epsilon * piBHat
 fiw = epsilon * piBHat 
