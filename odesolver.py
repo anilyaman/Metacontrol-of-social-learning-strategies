@@ -4,6 +4,7 @@ def system(w, t, p):
     IC, IW, S = w
     fic, fiw, fs, eta = p
 
+    fs = IC*fic + IW*fiw
     phi = IC * fic + IW * fiw + S * fs
     f = [IC * ( fic - phi ) + eta * IW,   \
          IW * ( fiw - phi) - eta * IW,   \
@@ -11,9 +12,9 @@ def system(w, t, p):
     return f
 
 # Initial conditions and parameters
-IC0 = 0.33333
-IW0 = 0.33333
-S0 = 0.33333
+IC0 = 0.2
+IW0 = 0.2
+S0 = 0.6
 epsilon = 0.1
 piBStar = 0.8
 piBHat = 0.1
@@ -29,8 +30,8 @@ w0 = [IC0, IW0, S0]
 # ODE solver parameters
 abserr = 1.0e-8
 relerr = 1.0e-6
-stoptime = 10.0
-numpoints = 250
+stoptime = 200.0
+numpoints = 5000
 
 t = [stoptime * float(i) / (numpoints - 1) for i in range(numpoints)]
 # ODE solver.
