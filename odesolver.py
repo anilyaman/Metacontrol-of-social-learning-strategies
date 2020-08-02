@@ -4,7 +4,13 @@ def system(w, t, p):
     IC, IW, S = w
     fic, fiw, fs, eta = p
 
-    fs = (IC*fic + IW*fiw)/(IC+IW)
+    # fs = (IC*fic + IW*fiw)/(IC+IW)
+
+    if IC >= IW:
+        fs = fic
+    else:
+        fs = fiw
+
     phi = IC * fic + IW * fiw + S * fs
     f = [IC * ( fic - phi ) + eta * IW,   \
          IW * ( fiw - phi) - eta * IW,   \
