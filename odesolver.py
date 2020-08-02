@@ -4,9 +4,11 @@ def vectorfield(w, t, p):
     IC, IW, S = w
     fic, fiw, fs, eta = p
 
-    f = [IC * ( fic - ( IC * fic + IW * fiw + S * fs) + eta * IW),   \
-         IW * ( fiw - ( IC * fic + IW * fiw + S * fs) - eta * IW),   \
-         S  * ( fs  - ( (IC+IW) * (fic + fiw) + S * fs))]
+
+    phi = IC * fic + IW * fiw + S * fs
+    f = [IC * ( fic - phi ) + eta * IW,   \
+         IW * ( fiw - phi) - eta * IW,   \
+         S  * ( fs  - phi)]
     return f
 
 # Initial conditions and parameters
@@ -16,7 +18,7 @@ S0 = 0.5
 epsilon = 0.1
 piBStar = 0.8
 piBHat = 0.1
-eta = 0.01
+eta = epsilon
 
 fic = (1-epsilon) * piBStar + epsilon * piBHat
 fiw = epsilon * piBHat 
@@ -25,8 +27,8 @@ fs = fic
 # ODE solver parameters
 abserr = 1.0e-8
 relerr = 1.0e-6
-stoptime = 400.0
-numpoints = 10000
+stoptime = 40.0
+numpoints = 1000
 
 # Create the time samples for the output of the ODE solver.
 t = [stoptime * float(i) / (numpoints - 1) for i in range(numpoints)]
