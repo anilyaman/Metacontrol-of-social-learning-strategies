@@ -22,7 +22,7 @@ def system(w, t, p):
 
     phi = IC * fic + IW * fiw 
     fs = 0
-    d=10
+    d=8
     
     ICarr = []
     IWarr = []
@@ -76,9 +76,9 @@ def system(w, t, p):
 
 
 # Initial conditions and parameters
-IC0 = 0.2
-IW0 = 0.6
-S0 = 0.2
+IC0 = 0.01
+IW0 = 0.01
+S0 = 0.98
 epsilon = 0.1
 piBStar = 0.8
 piBHat = 0.1
