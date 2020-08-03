@@ -3,7 +3,7 @@ from pylab import *
 import numpy as np
 from ddeint import ddeint
 
-T = 100
+T = 200
 
 def piStar(t):
     return 0.8
@@ -40,13 +40,14 @@ def system(Y, t, d):
     
     if d!=0:
         if t-d >= t%d:
-            for i in np.arange(t%d, d, t):
+            for i in np.arange(t%d, t, d):
                 Icounter.append(i)
                 # if((1-epsilon)*ICarr[Icounter.index(i)-1] >= epsilon*ICarr[Icounter.index(i)-1]+IWarr[Icounter.index(i)-1]):
                 if xbStar[len(xbStar)-1] >= xbHat[len(xbHat)-1]:
                     bS.append([1,0])
                 else:
                     bS.append([0,1])   
+
                 xbStar.append((1-epsilon)*ICarr[len(ICarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][0])
                 xbHat.append(epsilon*ICarr[len(ICarr)-1]+IWarr[len(IWarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][1])
 
@@ -81,7 +82,7 @@ tt = np.linspace(0,T,5000)
 
 fig,ax=subplots(1)
 
-for d in [0, 5]:
+for d in [0, 1]:
     yy = ddeint(system,g,tt,fargs=(d,))
     if d==0:
         ax.plot(tt, yy[:,0],lw=2,label="IC delay = %.01f"%d)
