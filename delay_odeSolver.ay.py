@@ -47,8 +47,8 @@ def system(Y, t, d):
         bS.append([1 0])
      else:
         bS.append([0 1])   
-     xbStar.append((1-epsilon)*ICarr[len(bS)-1] + Sarr[len(bS)-1] * bS[len(bS)-1,1])
-     xbHat.append(epsilon*ICarr[len(bS)-1]+IWarr[len(bS)-1] + Sarr[len(bS)-1] * bS[len(bS)-1,2])
+     xbStar.append((1-epsilon)*ICarr[len(bS)-1] + Sarr[len(bS)-1] * bS[len(bS)-2,1])
+     xbHat.append(epsilon*ICarr[len(bS)-1]+IWarr[len(bS)-1] + Sarr[len(bS)-1] * bS[len(bS)-2,2])
     
         
         
