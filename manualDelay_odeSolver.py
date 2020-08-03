@@ -4,13 +4,13 @@ import numpy as np
 
 
 T = 20
+changeEnv = 1
 
 def piStar(t):
     return 0.8
 
 def piHat(t):
     return 0.1
-
 
 
 def system(w, t, p):
@@ -54,7 +54,8 @@ def system(w, t, p):
                 xbStar.append((1-epsilon)*ICarr[len(ICarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][0])
                 xbHat.append(epsilon*ICarr[len(ICarr)-1] + IWarr[len(IWarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][1])
 
-        fs = bS[len(bS)-1][0] * piStar(t) + bS[len(bS)-1][1] * piHat(t)
+        #fs = bS[len(bS)-1][0] * piStar(t) + bS[len(bS)-1][1] * piHat(t)  #copy most common
+        fs = S * (bS[len(bS)-1][0] * piStar(t) + bS[len(bS)-1][1] * piHat(t)) + IC*fic + IW*fiw #proportional copy
         
         
         
