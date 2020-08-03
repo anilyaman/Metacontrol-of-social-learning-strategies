@@ -2,9 +2,7 @@
 
 TODO:
 1. Assumptions
-1.1 time delay for only social learners because they are informed from the previous time step
-1.2. Recursion not included (i.e. social learners are not informed from their own decision from previous time steps)
-1.3. 
+1.1. 
 
 
 2. Add mutation to differential equations
