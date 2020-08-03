@@ -42,7 +42,8 @@ def system(Y, t, d):
         if t-d >= t%d:
             for i in np.arange(t%d, d, t):
                 Icounter.append(i)
-                if((1-epsilon)*ICarr[Icounter.index(i)-1] >= epsilon*ICarr[Icounter.index(i)-1]+IWarr[Icounter.index(i)-1]):
+                # if((1-epsilon)*ICarr[Icounter.index(i)-1] >= epsilon*ICarr[Icounter.index(i)-1]+IWarr[Icounter.index(i)-1]):
+                if xbStar[len(xbStar)-1] >= xbHat[len(xbHat)-1]:
                     bS.append([1,0])
                 else:
                     bS.append([0,1])   
