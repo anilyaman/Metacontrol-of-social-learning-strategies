@@ -11,9 +11,7 @@ def piStar(t):
 def piHat(t):
     return 0.1
 
-ICarr = []
-IWarr = []
-Sarr = []
+
 
 def system(w, t, p):
     IC, IW, S = w
@@ -24,8 +22,13 @@ def system(w, t, p):
 
     phi = IC * fic + IW * fiw 
     fs = 0
-    d=1
+    d=10
     
+    ICarr = []
+    IWarr = []
+    Sarr = []
+
+
     ICarr.append(IC)
     IWarr.append(IW)
     Sarr.append(S)
@@ -54,9 +57,8 @@ def system(w, t, p):
         fs = bS[len(bS)-1][0] * piStar(t) + bS[len(bS)-1][1] * piHat(t)
         
         
-    print(xbStar)
-
-
+        
+    phi = IC * fic + IW * fiw + S * fs
 
     # zero delay:
     #if d==0:
@@ -74,9 +76,9 @@ def system(w, t, p):
 
 
 # Initial conditions and parameters
-IC0 = 0.1
-IW0 = 0.5
-S0 = 0.4
+IC0 = 0.2
+IW0 = 0.6
+S0 = 0.2
 epsilon = 0.1
 piBStar = 0.8
 piBHat = 0.1
@@ -92,7 +94,7 @@ w0 = [IC0, IW0, S0]
 # ODE solver parameters
 abserr = 1.0e-8
 relerr = 1.0e-6
-stoptime = 70.0
+stoptime = 200.0
 numpoints = 1000
 
 t = [stoptime * float(i) / (numpoints - 1) for i in range(numpoints)]
@@ -113,7 +115,7 @@ for t1, w1 in zip(t, wsol):
   I.append(w1[0] + w1[1])
 
 
-!pip install pylab
+#!pip install pylab
 from pylab import figure, plot, xlabel, grid, legend, title
 from matplotlib.font_manager import FontProperties
 
