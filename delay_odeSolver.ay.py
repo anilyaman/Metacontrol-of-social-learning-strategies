@@ -39,9 +39,8 @@ def system(Y, t, d):
     xbHat.append(epsilon*ICarr[0]+IWarr[0])
     
     if d!=0:
-        start=t%d
         if t-d >= t%d:
-            for i in np.arange(start, d, t):
+            for i in np.arange(t%d, d, t):
                 Icounter.append(i)
                 if((1-epsilon)*ICarr[Icounter.index(i)-1] >= epsilon*ICarr[Icounter.index(i)-1]+IWarr[Icounter.index(i)-1]):
                     bS.append([1,0])
