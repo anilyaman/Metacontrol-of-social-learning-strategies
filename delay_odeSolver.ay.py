@@ -11,8 +11,6 @@ def piStar(t):
 def piHat(t):
     return 0.1
 
-tmp = 0
-
 ICarr = []
 IWarr = []
 Sarr = []
@@ -34,26 +32,23 @@ def system(Y, t, d):
     xbStar = [] 
     xbHat = [] 
     bS = []
-    
-    bS.append([0 0])
+    Icounter = [0]
+
+    bS.append([0,0])
     xbStar.append((1-epsilon)*ICarr[0])
     xbHat.append(epsilon*ICarr[0]+IWarr[0])
     
-    
-    for i in np.arange(start, 5, t):
     start=t%d
-    counter = start;start = 
-    if((1-epsilon)*ICarr[len(bS)-d????] >= epsilon*ICarr[len(bS)-d????]+IWarr[len(bS)-d????])):
-        bS.append([1 0])
-     else:
-        bS.append([0 1])   
-     xbStar.append((1-epsilon)*ICarr[len(bS)-1] + Sarr[len(bS)-1] * bS[len(bS)-2,1])
-     xbHat.append(epsilon*ICarr[len(bS)-1]+IWarr[len(bS)-1] + Sarr[len(bS)-1] * bS[len(bS)-2,2])
-    
+    if t-d >= t%d:
+        for i in np.arange(start, d, t):
+            Icounter.append(i)
+            if((1-epsilon)*ICarr[Icounter.index(i)-1] >= epsilon*ICarr[Icounter.index(i)-1]+IWarr[Icounter.index(i)-1]):
+                bS.append([1,0])
+            else:
+                bS.append([0,1])   
+            xbStar.append((1-epsilon)*ICarr[len(ICarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][0])
+            xbHat.append(epsilon*ICarr[len(ICarr)-1]+IWarr[len(IWarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][1])
         
-        
-        
-    
 
 # zero delay:
 #     if (1-epsilon)*ICd >= epsilon*ICd+IWd and t-d>0:
