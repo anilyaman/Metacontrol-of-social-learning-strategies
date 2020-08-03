@@ -90,14 +90,14 @@ tt = np.linspace(0,T,5000)
 # tt = np.array([0,1,2,3,4,5,6,7,8,9,10])
 
 fig,ax=subplots(1)
-for d in [0, 2, 4, 8]:
+for d in [0, 3, 5]:
     yy = ddeint(system,g,tt,fargs=(d,))
-    if d==0:
-        ax.plot(tt, yy[:,0],lw=2,label="IC delay = %.01f"%d)
-        ax.plot(tt, yy[:,1],lw=2,label="IW delay = %.01f"%d)
-        ax.plot(tt, yy[:,2],lw=2,label="S delay = %.01f"%d)
-    else:
-        ax.plot(tt, yy[:,2],lw=2,label="S delay = %.01f"%d)
+    #if d==0:
+    ax.plot(tt, yy[:,0],lw=2,label="IC delay = %.01f"%d)
+    ax.plot(tt, yy[:,1],lw=2,label="IW delay = %.01f"%d)
+    ax.plot(tt, yy[:,2],lw=2,label="S delay = %.01f"%d)
+    #else:
+    #    ax.plot(tt, yy[:,2],lw=2,label="S delay = %.01f"%d)
 
 legend()
 show()
