@@ -3,7 +3,7 @@ from pylab import *
 import numpy as np
 from ddeint import ddeint
 
-T = 10
+T = 100
 
 def piStar(t):
     return 0.8
@@ -38,25 +38,28 @@ def system(Y, t, d):
     xbStar.append((1-epsilon)*ICarr[0])
     xbHat.append(epsilon*ICarr[0]+IWarr[0])
     
-    start=t%d
-    if t-d >= t%d:
-        for i in np.arange(start, d, t):
-            Icounter.append(i)
-            if((1-epsilon)*ICarr[Icounter.index(i)-1] >= epsilon*ICarr[Icounter.index(i)-1]+IWarr[Icounter.index(i)-1]):
-                bS.append([1,0])
-            else:
-                bS.append([0,1])   
-            xbStar.append((1-epsilon)*ICarr[len(ICarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][0])
-            xbHat.append(epsilon*ICarr[len(ICarr)-1]+IWarr[len(IWarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][1])
-        
+    if d!=0:
+        start=t%d
+        if t-d >= t%d:
+            for i in np.arange(start, d, t):
+                Icounter.append(i)
+                if((1-epsilon)*ICarr[Icounter.index(i)-1] >= epsilon*ICarr[Icounter.index(i)-1]+IWarr[Icounter.index(i)-1]):
+                    bS.append([1,0])
+                else:
+                    bS.append([0,1])   
+                xbStar.append((1-epsilon)*ICarr[len(ICarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][0])
+                xbHat.append(epsilon*ICarr[len(ICarr)-1]+IWarr[len(IWarr)-1] + Sarr[len(Sarr)-1] * bS[len(bS)-2][1])
 
-# zero delay:
-#     if (1-epsilon)*ICd >= epsilon*ICd+IWd and t-d>0:
-        # fs = piStar(t)
-        # phi = IC * fic + IW * fiw + S * fs
-    # else:
-        # fs = piHat(t)
-        # phi = IC * fic + IW * fiw + S * fs
+        fs = bS[len(bS)-1][0] * piStar(t) + bS[len(bS)-1][1] * piHat(t)
+
+    # zero delay:
+    if d==0:
+        if (1-epsilon)*ICd >= epsilon*ICd+IWd and t-d>0:
+            fs = piStar(t)
+            phi = IC * fic + IW * fiw + S * fs
+        else:
+            fs = piHat(t)
+            phi = IC * fic + IW * fiw + S * fs
 
     f = np.array([IC * ( fic - phi ) + eta * IW,   \
          IW * ( fiw - phi) - eta * IW,   \
@@ -73,13 +76,12 @@ eta = epsilon
 
 w0 = [IC0, IW0, S0]
 g = lambda t : w0
-# tt = np.linspace(0,T,10)
-tt = np.array([0,1,2,3,4,5,6,7,8,9,10])
-print(tt)
+tt = np.linspace(0,T,5000)
+# tt = np.array([0,1,2,3,4,5,6,7,8,9,10])
 
 fig,ax=subplots(1)
 
-for d in [5]:
+for d in [0, 5]:
     yy = ddeint(system,g,tt,fargs=(d,))
     if d==0:
         ax.plot(tt, yy[:,0],lw=2,label="IC delay = %.01f"%d)
