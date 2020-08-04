@@ -54,7 +54,8 @@ def system(w, t, p):
         
     phi = IC * fic + IW * fiw + S * fs
 
-    Q = [[0.95, 0, 0.05], [0, 0.95, 0.05],[0.025, 0.025, 0.95]]
+    # Q = [[0.95, 0, 0.05], [0, 0.95, 0.05],[0.025, 0.025, 0.95]]
+    Q = np.identity(n=3)
     # f = np.array([IC * (fic - phi) + eta * IW, \
                  # IW * (fiw - phi) - eta * IW, \
                 # S * (fs - phi)])
