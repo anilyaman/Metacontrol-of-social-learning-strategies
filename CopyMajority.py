@@ -35,8 +35,8 @@ def system(w, t, p):
     xbStar = [] 
     xbHat = [] 
     bS = []
-
-    bS.append([0.00001,0.00001])
+    
+    bS.append([10e-8,10e-8])
     xbStar.append((1-epsilon)*ICarr[0])
     xbHat.append(epsilon*ICarr[0]+IWarr[0])
     if d!=0:
