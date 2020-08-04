@@ -67,18 +67,18 @@ def system(w, t, p):
 
 
 
-    f = np.array([IC * (fic - phi) + eta * IW, \
-                  IW * (fiw - phi) - eta * IW, \
-                  S * (fs - phi)])
+    #f = np.array([IC * (fic - phi) + eta * IW, \
+    #              IW * (fiw - phi) - eta * IW, \
+    #             S * (fs - phi)])
 
-    #Q = [[0.99, 0.005, 0.005], [0.005, 0.99, 0.005],[0.005, 0.005, 0.99]]
+    Q = [[0.95, 0, 0.05], [0, 0.95, 0.05],[0.025, 0.025, 0.95]]
 
+    #sum_j Qij = 1
     
 
-
-    #f = np.array([(IC*fic*Q[0][0] + IW*fiw*Q[1][0] + S*fs*Q[2][0]) - IC * phi + eta * IW,   \
-    #     (IC*fic*Q[0][1] + IW*fiw*Q[1][1] + S*fs*Q[2][1]) - IW*phi - eta * IW,   \
-    #     (IC*fic*Q[0][1] + IW*fiw*Q[1][1] + S*fs*Q[2][1]) - S*phi])
+    f = np.array([(IC*fic*Q[0][0] + IW*fiw*Q[1][0] + S*fs*Q[2][0]) - IC * phi + eta * IW,   \
+         (IC*fic*Q[0][1] + IW*fiw*Q[1][1] + S*fs*Q[2][1]) - IW*phi - eta * IW,   \
+         (IC*fic*Q[0][1] + IW*fiw*Q[1][1] + S*fs*Q[2][1]) - S*phi])
     return f
 
 
