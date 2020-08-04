@@ -1,8 +1,5 @@
-
 from scipy.integrate import odeint
 import numpy as np
-
-
 
 def piStar(t):
     return 0.8
@@ -10,6 +7,10 @@ def piStar(t):
 def piHat(t):
     return 0.1
 
+# Q += ((np.random.rand(3,3)-0.5)/0.5)*0.05
+# Q[Q<0]=0
+# Q[Q>1]=1
+# Q = Q/Q.sum(axis=1)[:,None]
 
 def system(w, t, p):
     IC, IW, S = w
@@ -20,13 +21,12 @@ def system(w, t, p):
 
     phi = IC * fic + IW * fiw 
     fs = 0
-    d=10
-    a = 2
+    d=2
+    a=2
     
     ICarr = []
     IWarr = []
     Sarr = []
-
 
     ICarr.append(IC)
     IWarr.append(IW)
@@ -52,35 +52,20 @@ def system(w, t, p):
         xbSum = xbStarPow + xbHatPow
         fs = (xbStarPow * piStar(t) + xbHatPow * piHat(t)) / xbSum
         
-        
-        
     phi = IC * fic + IW * fiw + S * fs
 
-    # zero delay:
-    #if d==0:
-    #if (1-epsilon)*ICd >= epsilon*ICd+IWd and t-d>0:
-    #  fs = piStar(t)
-    #  phi = IC * fic + IW * fiw + S * fs
-    #else:
-    #  fs = piHat(t)
-    #  phi = IC * fic + IW * fiw + S * fs
-
-
-
-    #f = np.array([IC * (fic - phi) + eta * IW, \
-    #              IW * (fiw - phi) - eta * IW, \
-    #             S * (fs - phi)])
-
     Q = [[0.95, 0, 0.05], [0, 0.95, 0.05],[0.025, 0.025, 0.95]]
+    # f = np.array([IC * (fic - phi) + eta * IW, \
+                 # IW * (fiw - phi) - eta * IW, \
+                # S * (fs - phi)])
 
+    # Q = np.transpose(Q)
     #sum_j Qij = 1
     
-
     f = np.array([(IC*fic*Q[0][0] + IW*fiw*Q[1][0] + S*fs*Q[2][0]) - IC * phi + eta * IW,   \
-         (IC*fic*Q[0][1] + IW*fiw*Q[1][1] + S*fs*Q[2][1]) - IW*phi - eta * IW,   \
-         (IC*fic*Q[0][1] + IW*fiw*Q[1][1] + S*fs*Q[2][1]) - S*phi])
+                  (IC*fic*Q[0][1] + IW*fiw*Q[1][1] + S*fs*Q[2][1]) - IW*phi - eta * IW,   \
+                  (IC*fic*Q[0][2] + IW*fiw*Q[1][2] + S*fs*Q[2][2]) - S*phi])
     return f
-
 
 # Initial conditions and parameters
 IC0 = 0.3
@@ -123,10 +108,8 @@ for t1, w1 in zip(t, wsol):
 
 
 #!pip install pylab
-from pylab import figure, plot, xlabel, grid, legend, title
+from pylab import figure, plot, xlabel, grid, legend, title, show
 from matplotlib.font_manager import FontProperties
-
-
 
 figure(1, figsize=(6, 4.5))
 
@@ -140,3 +123,4 @@ plot(t, I, 'y', linewidth=lw)
 
 legend((r'$IC$', r'$IW$', r'$S$', r'$I (=IC+IW)$'), prop=FontProperties(size=16))
 # title('test')
+show()
