@@ -25,15 +25,15 @@ def system(w, t, p):
 
     if t < stoptime / 2:
         fB1 = (1 - epsilon) * piB1(t) + epsilon * piB2(t)
-        fB2 = piB2(t)
+        fB2 = (1-epsilon) * piB2(t)
     else:
-        fB1 = piB2(t)
+        fB1 = (1-epsilon) * piB2(t)
         fB2 = (1 - epsilon) * piB2(t) + epsilon * piB1(t)
 
     phi = B1 * fB1 + B2 * fB2
     fs = 0
-    d = 2
-    a = 2
+    d = 5
+    a = 0.1
 
     B1arr = []
     B2arr = []
@@ -56,10 +56,12 @@ def system(w, t, p):
                 if i < stoptime/2:
                     bS.append([xB1[len(xB1) - 1], xB2[len(xB2) - 1]])
                     xB1.append((1 - epsilon) * B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][0])
-                    xB2.append(epsilon * B1arr[len(B1arr) - 1] + B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
+                    xB2.append(epsilon * B1arr[len(B1arr) - 1] + (1-epsilon) * B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
                 else:
+                    print(bS[len(bS)-1])
                     bS.append([xB1[len(xB1) - 1], xB2[len(xB2) - 1]])
-                    xB1.append(epsilon * B2arr[len(B2arr) - 1] + B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] *bS[len(bS) - 2][0])
+                    print(bS[len(bS) - 1])
+                    xB1.append(epsilon * B2arr[len(B2arr) - 1] + (1-epsilon) * B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] *bS[len(bS) - 2][0])
                     xB2.append((1 - epsilon) * B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
 
         xB1Pow = pow(bS[len(bS) - 1][0], a)
@@ -95,13 +97,13 @@ B10 = 0.01
 B20 = 0.01
 S0 = 0.01
 epsilon = 0.1
-piBStar = 0.8
-piBHat = 0.1
+piBStar = 0
+piBHat = 0
 eta = epsilon
 
-fB1 = (1 - epsilon) * piBStar + epsilon * piBHat
-fB2 = epsilon * piBHat
-fs = fB1
+fB1 = []
+fB2 = []
+fs = []
 
 p = [fB1, fB2, fs, eta]
 w0 = [B10, B20, S0]
