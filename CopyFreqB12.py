@@ -43,29 +43,29 @@ def system(w, t, p):
     B2arr.append(B2)
     Sarr.append(S)
 
-    xbStar = []
-    xbHat = []
+    xB1 = []
+    xB2 = []
     bS = []
 
     bS.append([10e-8, 10e-8])
-    xbStar.append((1 - epsilon) * B1arr[0])
-    xbHat.append(epsilon * B1arr[0] + B2arr[0])
+    xB1.append((1 - epsilon) * B1arr[0])
+    xB2.append(epsilon * B1arr[0] + B2arr[0])
     if d != 0:
         if t - d >= t % d:
             for i in np.arange(t % d, t, d):
                 if i < stoptime/2:
-                    bS.append([xbStar[len(xbStar) - 1], xbHat[len(xbHat) - 1]])
-                    xbStar.append((1 - epsilon) * B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][0])
-                    xbHat.append(epsilon * B1arr[len(B1arr) - 1] + B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
+                    bS.append([xB1[len(xB1) - 1], xB2[len(xB2) - 1]])
+                    xB1.append((1 - epsilon) * B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][0])
+                    xB2.append(epsilon * B1arr[len(B1arr) - 1] + B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
                 else:
-                    bS.append([xbStar[len(xbStar) - 1], xbHat[len(xbHat) - 1]])
-                    xbStar.append(epsilon * B2arr[len(B2arr) - 1] + B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] *bS[len(bS) - 2][0])
-                    xbHat.append((1 - epsilon) * B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
+                    bS.append([xB1[len(xB1) - 1], xB2[len(xB2) - 1]])
+                    xB1.append(epsilon * B2arr[len(B2arr) - 1] + B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] *bS[len(bS) - 2][0])
+                    xB2.append((1 - epsilon) * B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
 
-        xbStarPow = pow(bS[len(bS) - 1][0], a)
-        xbHatPow = pow(bS[len(bS) - 1][1], a)
-        xbSum = xbStarPow + xbHatPow
-        fs = (xbStarPow * piB1(t) + xbHatPow * piB2(t)) / xbSum
+        xB1Pow = pow(bS[len(bS) - 1][0], a)
+        xB2Pow = pow(bS[len(bS) - 1][1], a)
+        xbSum = xB1Pow + xB2Pow
+        fs = (xB1Pow * piB1(t) + xB2Pow * piB2(t)) / xbSum
 
     phi = B1 * fB1 + B2 * fB2 + S * fs
 
