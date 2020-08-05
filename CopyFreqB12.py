@@ -32,8 +32,8 @@ def system(w, t, p):
 
     phi = B1 * fB1 + B2 * fB2
     fs = 0
-    d = 5
-    a = 0.1
+    d = 1
+    a = 1.5
 
     B1arr = []
     B2arr = []
@@ -58,9 +58,7 @@ def system(w, t, p):
                     xB1.append((1 - epsilon) * B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][0])
                     xB2.append(epsilon * B1arr[len(B1arr) - 1] + (1-epsilon) * B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
                 else:
-                    print(bS[len(bS)-1])
                     bS.append([xB1[len(xB1) - 1], xB2[len(xB2) - 1]])
-                    print(bS[len(bS) - 1])
                     xB1.append(epsilon * B2arr[len(B2arr) - 1] + (1-epsilon) * B1arr[len(B1arr) - 1] + Sarr[len(Sarr) - 1] *bS[len(bS) - 2][0])
                     xB2.append((1 - epsilon) * B2arr[len(B2arr) - 1] + Sarr[len(Sarr) - 1] * bS[len(bS) - 2][1])
 
