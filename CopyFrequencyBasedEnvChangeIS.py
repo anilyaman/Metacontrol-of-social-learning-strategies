@@ -32,7 +32,7 @@ def system(w, t, p):
     else:
         fic = (1 - epsilon) * piHat(t) + epsilon * piStar(t)
 
-    phi = IC * fic 
+    phi = IC * fic
     fs = 0
     d = 1
     a = 1.3
@@ -64,8 +64,6 @@ def system(w, t, p):
 
         xbStarPow = pow(bS[len(bS) - 1][0], a)
         xbHatPow = pow(bS[len(bS) - 1][1], a)
-        print(xbStarPow)
-        print(xbHatPow)
         xbSum = xbStarPow + xbHatPow
         fs = (xbStarPow * piStar(t) + xbHatPow * piHat(t)) / xbSum
 
