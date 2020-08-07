@@ -7,7 +7,7 @@ import math
 abserr = 1.0e-8
 relerr = 1.0e-6
 numpoints = 1000
-stoptime = 300.0
+stoptime = 500.0
 
 tt = [stoptime * float(i) / (numpoints - 1) for i in range(numpoints)]
 
@@ -26,16 +26,15 @@ def piB2(t):
         return 0.8
 
 
-B1arr = []#np.zeros(len(tt))
-B2arr = []#np.zeros(len(tt))
-S1arr = []#np.zeros(len(tt))
-S2arr = []#np.zeros(len(tt))
-fS1arr = []#np.zeros(len(tt))
-fS2arr = []#np.zeros(len(tt))
-fB1arr = []#np.zeros(len(tt))
-fB2arr = []#np.zeros(len(tt))
-phiarr = []#np.zeros(len(tt))
-#evaluated = np.zeros(len(tt))
+B1arr = []
+B2arr = []
+S1arr = []
+S2arr = []
+fS1arr = []
+fS2arr = []
+fB1arr = []
+fB2arr = []
+phiarr = []
 
 Tarr = []
 
@@ -54,8 +53,8 @@ def system(w, t, p):
     fB2 = (1 - epsilon) * piB2(t) + epsilon * piB1(t)
 
 
-    d = 10
-    a = 2
+    d = 1
+    a = 0.01
 
 
 
@@ -81,20 +80,19 @@ def system(w, t, p):
 
         xSb1.append(B1arr[inx] + S1arr[inx])
         xSb2.append(B2arr[inx] + S2arr[inx])
-        #xB1.append((1 - epsilon) * B1arr[inx] + epsilon * B2arr[inx])
-        #xB2.append((1-epsilon) * B2arr[inx] + epsilon * B1arr[inx])
+        if(xSb1[len(xSb1) - 1] > xSb2[len(xSb2) - 1]):
+            xSb1[len(xSb1) - 1] = a
+            xSb2[len(xSb1) - 1] = (1-a)
+        else:
+            xSb1[len(xSb1) - 1] = (1-a)
+            xSb2[len(xSb1) - 1] = a
+        #print([xSb1[len(xB1)-1], xSb2[len(xB2)-1]])
+        #xB1norm = pow(xSb1[len(xB1) - 1], a)
+        #xB2norm = pow(xSb2[len(xB2) - 1], a)
+        #xSb1[len(xB1) - 1] = (xB1norm / (xB1norm + xB2norm))
+        #xSb2[len(xB1) - 1] = (xB2norm / (xB1norm + xB2norm))
 
-        xB1norm = pow(xSb1[len(xB1) - 1], a)
-        xB2norm = pow(xSb2[len(xB2) - 1], a)
-        xSb1[len(xB1) - 1] = (xB1norm / (xB1norm + xB2norm))
-        xSb2[len(xB1) - 1] = (xB2norm / (xB1norm + xB2norm))
 
-    #if(xB1[len(xB1) - 1] > xB2[len(xB2) - 1]):
-    #    xSb1.append(1)
-    #    xSb2.append(0)
-    #else:
-    #   xSb1.append(0)
-    #   xSb2.append(1)
 
 
 
@@ -108,7 +106,8 @@ def system(w, t, p):
     phi = B1 * fB1 + B2 * fB2 + S1 * fS1 + S2 * fS2
     phiarr.append(phi)
 
-    Q = [[0.998, 0, 0.001, 0.001], [0, 0.998, 0.001, 0.001], [0.0005, 0.0005, 0.999, 0], [0.0005, 0.0005, 0, 0.999]]
+    #Q = [[0.998, 0, 0.001, 0.001], [0, 0.998, 0.001, 0.001], [0.0005, 0.0005, 0.999, 0], [0.0005, 0.0005, 0, 0.999]]
+    Q = [[0.98, 0, 0.01, 0.01], [0, 0.98, 0.01, 0.01], [0.005, 0.005, 0.99, 0], [0.005, 0.005, 0, 0.99]]
 
 
     f = np.array([(B1 * fB1 * Q[0][0] + B2 * fB2 * Q[1][0] + S1 * fS1 * Q[2][0] + S2 * fS2 * Q[3][0]) - B1 * phi,
@@ -120,7 +119,7 @@ def system(w, t, p):
 
 
 # Initial conditions and parameters
-B10 = 0.01
+B10 = 0.97
 B20 = 0.01
 S10 = 0.01
 S20 = 0.01
@@ -178,8 +177,11 @@ subplot(2,1,1)
 plot(tt, B1, 'b', linewidth=lw)
 plot(tt, B2, 'g', linewidth=lw)
 plot(tt, S1, 'k', linewidth=lw)
-plot(tt, S2, 'm', linewidth=lw)
-legend((r'$B1$', r'$B2$', r'$S1$', r'$S2$'), prop=FontProperties(size=16))
+plot(tt, S2, 'y', linewidth=lw)
+plot(tt, np.array(B1)+np.array(B2), 'r', linewidth=lw)
+plot(tt, np.array(S1)+np.array(S2), 'm', linewidth=lw)
+legend((r'$B1$', r'$B2$', r'$S1$', r'$S2$', r'$IL$', r'$SL$'), prop=FontProperties(size=16))
+
 
 subplot(2,1,2)
 plot(fB1arr, 'b', linewidth=lw)
