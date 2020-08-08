@@ -4,23 +4,23 @@ import math
 
 
 # ODE solver parameters
-abserr = 1.0e-8
-relerr = 1.0e-6
+abserr = 1.0e-9
+relerr = 1.0e-7
 numpoints = 1000
-stoptime = 500.0
+stoptime = 600.0
 
 tt = [stoptime * float(i) / (numpoints - 1) for i in range(numpoints)]
 
 
 def piB1(t):
-    if t < stoptime / 2:
+    if t < stoptime / 3 or t > 2*stoptime / 3:
         return 0.8
     else:
         return 0.2
 
 
 def piB2(t):
-    if t < stoptime / 2:
+    if t < stoptime / 3 or t > 2*stoptime / 3:
         return 0.2
     else:
         return 0.8
@@ -53,10 +53,8 @@ def system(w, t, p):
     fB2 = (1 - epsilon) * piB2(t) + epsilon * piB1(t)
 
 
-    d = 1
-    a = 0.01
-
-
+    d = 10
+    a = 0.5
 
     B1arr.append(B1)
     B2arr.append(B2)
@@ -77,20 +75,20 @@ def system(w, t, p):
         inx = tempArr.index(min(tempArr))
         if(inx > len(xSb1)-1):
             inx = len(xSb1)-1
-
         xSb1.append(B1arr[inx] + S1arr[inx])
         xSb2.append(B2arr[inx] + S2arr[inx])
-        if(xSb1[len(xSb1) - 1] > xSb2[len(xSb2) - 1]):
-            xSb1[len(xSb1) - 1] = a
-            xSb2[len(xSb1) - 1] = (1-a)
-        else:
-            xSb1[len(xSb1) - 1] = (1-a)
-            xSb2[len(xSb1) - 1] = a
+        xSb1norm = pow(xSb1[len(xSb1) - 1], a)
+        xSb2norm = pow(xSb2[len(xSb2) - 1], a)
+        xSb1[len(xSb1) - 1] = (xSb1norm / (xSb1norm + xSb2norm))
+        xSb2[len(xSb2) - 1] = (xSb2norm / (xSb1norm + xSb2norm))
+
+        #if(xSb1[len(xSb1) - 1] > xSb2[len(xSb2) - 1]):
+        #    xSb1[len(xSb1) - 1] = a
+        #    xSb2[len(xSb1) - 1] = (1-a)
+        #else:
+        #    xSb1[len(xSb1) - 1] = (1-a)
+        #    xSb2[len(xSb1) - 1] = a
         #print([xSb1[len(xB1)-1], xSb2[len(xB2)-1]])
-        #xB1norm = pow(xSb1[len(xB1) - 1], a)
-        #xB2norm = pow(xSb2[len(xB2) - 1], a)
-        #xSb1[len(xB1) - 1] = (xB1norm / (xB1norm + xB2norm))
-        #xSb2[len(xB1) - 1] = (xB2norm / (xB1norm + xB2norm))
 
 
 
@@ -107,7 +105,7 @@ def system(w, t, p):
     phiarr.append(phi)
 
     #Q = [[0.998, 0, 0.001, 0.001], [0, 0.998, 0.001, 0.001], [0.0005, 0.0005, 0.999, 0], [0.0005, 0.0005, 0, 0.999]]
-    Q = [[0.98, 0, 0.01, 0.01], [0, 0.98, 0.01, 0.01], [0.005, 0.005, 0.99, 0], [0.005, 0.005, 0, 0.99]]
+    Q = [[0.98, 0, 0.01, 0.01], [0, 0.98, 0.01, 0.01], [0.01, 0.01, 0.98, 0], [0.01, 0.01, 0, 0.98]]
 
 
     f = np.array([(B1 * fB1 * Q[0][0] + B2 * fB2 * Q[1][0] + S1 * fS1 * Q[2][0] + S2 * fS2 * Q[3][0]) - B1 * phi,
@@ -119,10 +117,10 @@ def system(w, t, p):
 
 
 # Initial conditions and parameters
-B10 = 0.97
-B20 = 0.01
-S10 = 0.01
-S20 = 0.01
+B10 = 0.25
+B20 = 0.25
+S10 = 0.25
+S20 = 0.25
 epsilon = 0.1
 piBStar = 0
 piBHat = 0
@@ -174,21 +172,29 @@ for i in range(1,len(phiarr)-1, 1):
 xlabel('t')
 lw = 2
 subplot(2,1,1)
+#plot(tt, B1, 'b', linewidth=lw)
+#plot(tt, B2, 'g', linewidth=lw)
+#plot(tt, S1, 'k', linewidth=lw)
+#plot(tt, S2, 'y', linewidth=lw)
+plot(tt, np.array(B1)+np.array(B2), 'r', linewidth=lw)
+plot(tt, np.array(S1)+np.array(S2), 'm', linewidth=lw)
+#plot(np.array(B1)+np.array(B2), np.array(S1)+np.array(S2), 'm', linewidth=lw)
+#legend((r'$B1$', r'$B2$', r'$S1$', r'$S2$', r'$IL$', r'$SL$'), prop=FontProperties(size=16))
+legend(( r'$IL$', r'$SL$'), prop=FontProperties(size=16))
+
+
+subplot(2,1,2)
 plot(tt, B1, 'b', linewidth=lw)
 plot(tt, B2, 'g', linewidth=lw)
 plot(tt, S1, 'k', linewidth=lw)
 plot(tt, S2, 'y', linewidth=lw)
-plot(tt, np.array(B1)+np.array(B2), 'r', linewidth=lw)
-plot(tt, np.array(S1)+np.array(S2), 'm', linewidth=lw)
-legend((r'$B1$', r'$B2$', r'$S1$', r'$S2$', r'$IL$', r'$SL$'), prop=FontProperties(size=16))
+legend((r'$B1$', r'$B2$', r'$S1$', r'$S2$'), prop=FontProperties(size=16))
 
-
-subplot(2,1,2)
-plot(fB1arr, 'b', linewidth=lw)
-plot(fB2arr, 'g', linewidth=lw)
-plot(fS1arr, 'k', linewidth=lw)
-plot(fS2arr, 'm', linewidth=lw)
-plot(phiarr, 'r', linewidth=lw)
+#plot(fB1arr, 'b', linewidth=lw)
+#plot(fB2arr, 'g', linewidth=lw)
+#plot(fS1arr, 'k', linewidth=lw)
+#plot(fS2arr, 'm', linewidth=lw)
+#plot(phiarr, 'r', linewidth=lw)
 
 legend((r'$fB1arr$', r'$fB2arr$', r'$fS1arr$',r'$fS2arr$', r'$phiarr$'), prop=FontProperties(size=16))
 # title('test')
