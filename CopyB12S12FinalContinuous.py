@@ -11,19 +11,23 @@ stoptime = 600.0
 
 tt = [stoptime * float(i) / (numpoints - 1) for i in range(numpoints)]
 
+piOpt = np.random.normal(0.8, 0.1, 10000)
+piSOpt = np.random.normal(0.2, 0.1, 10000)
+
+
 
 def piB1(t):
     if t < stoptime / 3 or t > 2*stoptime / 3:
-        return 0.8
+        return piOpt[math.floor(t*10)]
     else:
-        return 0.2
+        return piSOpt[math.floor(t*10)]
 
 
 def piB2(t):
     if t < stoptime / 3 or t > 2*stoptime / 3:
-        return 0.2
+        return piSOpt[math.floor(t*10)]
     else:
-        return 0.8
+        return piOpt[math.floor(t*10)]
 
 
 B1arr = []
