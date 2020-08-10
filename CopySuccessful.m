@@ -1,8 +1,10 @@
 function CopySuccessful
 T = 300;
 
-tau = 0; %delay for social learners
+tau = 1; %delay for social learners
 epsilon  = 0.1; %
+
+
 
 payOpt = normrnd(0.2,0,1000); %introducing some noise for the payoff of optimum behavior
 paySOpt = normrnd(0.8,0,1000);%introducing some noise for the payoff of sub-optimum behavior
@@ -42,9 +44,9 @@ legend({'IL','SL'})
         fSt = 0;
         if(t-tau >= 0)
             if(fB1(t-tau) > fB2(t-tau))
-                fSt = piB1(t);
+                fSt = (1-epsilon)^3*piB1(t) + 3*(1-epsilon)^2*epsilon*piB1(t) + 3*(1-epsilon)*epsilon^2*piB2(t) + epsilon^3*piB2(t);
             else
-                fSt = piB2(t);
+                fSt = (1-epsilon)^3*piB2(t) + 3*(1-epsilon)^2*epsilon*piB2(t) + 3*(1-epsilon)*epsilon^2*piB1(t) + epsilon^3*piB1(t);
             end
         end
         
