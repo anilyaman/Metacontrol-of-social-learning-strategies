@@ -1,19 +1,8 @@
-# Social-Learning-Strategies
+# Meta-control of social learning strategies
+Code of the experiments in paper:
 
-TODO:
-1. Assumptions
-1.1. 
-
-
-2. Add mutation to differential equations
-
-3. Implement all social strategies (i.e. CopyRandom, CopyMajority ...)
-
-4. Environment change
-
-5. Complete all analysis of graphs for different parameters and initial conditions for 2-armed behavior case
+Meta-control of social learning strategies
+A Yaman, N Bredeche, O Çaylak, JZ Leibo, SW Lee
+arXiv preprint arXiv:2106.10015
 
 
-6. Extend behaviors to n-armed
-
-7. Perform same on n-armed case analysis done in 2-armed case 
