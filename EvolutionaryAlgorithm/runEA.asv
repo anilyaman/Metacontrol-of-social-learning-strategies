@@ -17,15 +17,15 @@ settings.mu1 =  [1  1  1]; %mean of the reward distributions for the first arm i
 settings.std1 = [0.05 0.05  0.05];%std of the reward distributions for the first arm in each period
 settings.mu2 =  [0.5 0.5  0.7];%mean of the reward distributions for the second arm in each period
 settings.std2 = [0.05 0.05  0.5];%std of the reward distributions for the second arm in each period
-settings.randReversal = [1 1 1]; %whether to apply reward reversal that is swithcing the means and stds of the arms for each period
-nRun = 28; %the number of runs
+settings.randReversal = [1 1 1]; %whether to apply reward reversal that is 
+nRun = 4*28;
 
 
-settings.nArm = 2; %the number of arms
+settings.nArm = 2;
 
 
 
-%type of strategy: individual learning 
+
 settings.strategy = 'individual';
 nIL = zeros(nRun,settings.T);
 nSL = zeros(nRun,settings.T);
@@ -33,7 +33,7 @@ phi = zeros(nRun,settings.T);
 conformityCoef = zeros(nRun,settings.T);
 varCoef = zeros(nRun,settings.T);
 
-for i=1:nRun
+parfor i=1:nRun
     res = onlyIndividualLearning(settings);
     nIL(i,:) = res.nIL;
     nSL(i,:) = res.nSL;
@@ -49,19 +49,24 @@ results{1}.conformityCoef = conformityCoef;
 results{1}.varCoef = varCoef;
 
 
-%type of strategy: conformist social learning  
 counter = 2;
 settings.strategy = 'conformity';
 runAlgorithm();
 
-
-%type of strategy: success-based social learning 
 counter = 3;
 settings.strategy = 'success-based';
 runAlgorithm();
 
+% 
+% counter = 4;
+% settings.strategy = 'anti-conformity';
+% runAlgorithm();
+% 
+% counter = 5;
+% settings.strategy = 'uniform';
+% runAlgorithm();
 
-save results results
+save results2Arms400CertainTau20 results
 
 
 
@@ -74,7 +79,7 @@ save results results
         conformityCoef = zeros(nRun,settings.T);
         varCoef = zeros(nRun,settings.T);
         
-        for i=1:nRun
+        parfor i=1:nRun
             res = EvolutionaryAlgorithm(settings);
             nIL(i,:) = res.nIL;
             nSL(i,:) = res.nSL;
